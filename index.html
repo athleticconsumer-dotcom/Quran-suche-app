@@ -57,6 +57,10 @@
   /* Tabs */
   .tabs{display:flex;gap:6px;margin-bottom:10px}
   #lang{margin-left:auto;font-size:13px;padding:4px 6px}
+  .acct{font-size:13px;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .acct img{width:22px;height:22px;border-radius:50%}
+  .acct.in{border-color:var(--accent);color:var(--accent)}
+  .sync{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
   h1 .ttl{white-space:nowrap}
   .tabs button{flex:1;padding:8px;font-weight:600}
   .tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -174,7 +178,7 @@
 <body>
 <header>
   <div class="wrap">
-    <h1><span class="ttl" data-i="title">Quran Wortsuche</span> <select id="lang" aria-label="Sprache / Language / Язык"><option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="ru">🇷🇺 RU</option></select><small data-i="reciter">· Rezitation: Mahmoud Khalil al-Husary</small></h1>
+    <h1><span class="ttl" data-i="title">Quran Wortsuche</span> <select id="lang" aria-label="Sprache / Language / Язык"><option value="de">🇩🇪 DE</option><option value="en">🇬🇧 EN</option><option value="ru">🇷🇺 RU</option></select><button type="button" id="acct" class="acct">☁</button><small data-i="reciter">· Rezitation: Mahmoud Khalil al-Husary</small></h1>
     <nav class="tabs">
       <button type="button" data-t="search" class="on" data-i="tabSearch">🔍 Suche</button>
       <button type="button" data-t="fifty" data-i="tabFifty">50% des Quran</button>
@@ -238,7 +242,7 @@ const PAGE = 40;
 
 // ---------- Sprachen ----------
 const T = {
- de:{ title:"Quran Wortsuche", reciter:"· Rezitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Suche", tabFifty:"50% des Quran", tabS65:"65% des Quran",
+ de:{ title:"Quran Wortsuche", reciter:"· Rezitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Suche", tabFifty:"50% des Quran", tabS65:"65% des Quran", login:"Anmelden", logout:"Abmelden", acctTitle:"Konto", acctIn:"Du bist mit Google angemeldet. Deine Haken und Quiz-Rekorde werden online gespeichert und auf all deinen Geräten abgeglichen.", acctOut:"Melde dich mit Google an, damit deine Haken und Quiz-Rekorde online gespeichert werden und auf all deinen Geräten gleich sind.", loginGoogle:"Mit Google anmelden", syncOk:"✓ Fortschritt gespeichert", syncBusy:"Wird gespeichert…", syncErr:"Speichern fehlgeschlagen. Bitte Internet prüfen.", cloudOff:"Online-Speicherung ist gerade nicht erreichbar.",
   intro65:"Mit diesen Wörtern kommst du auf rund zwei Drittel des Quran-Textes. Jetzt geht es um häufige Nomen und Verben, die den Inhalt tragen. Tippe ein Wort an, um alle Ayat damit zu sehen.",
   searchBtn:"Suchen", mContains:"enthält", mStart:"beginnt mit", mExact:"genaues Wort", playAll:"▶ Alle abspielen",
   intro:"Diese Wörter kommen im Quran so oft vor, dass sie zusammen rund die Hälfte des Textes ausmachen. Tippe ein Wort an, um alle Ayat damit zu sehen. Mit dem Kästchen markierst du es als gelernt, mit ⓘ bekommst du Infos zum Wort.",
@@ -260,7 +264,7 @@ const T = {
   msg:[ "Perfekt! ماشاء الله", "Sehr gut!", "Gut, weiter üben.", "Dranbleiben, das wird!" ],
   practice:n=>`Fehler üben (${n})`, newQuiz:"Neues Quiz", toList:"← Zur Liste",
   trans:[["de.bubenheim","Deutsch · Bubenheim/Elyas"],["de.aburida","Deutsch · Abu Rida"]] },
- en:{ title:"Quran Word Search", reciter:"· Recitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Search", tabFifty:"50% of the Quran", tabS65:"65% of the Quran",
+ en:{ title:"Quran Word Search", reciter:"· Recitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Search", tabFifty:"50% of the Quran", tabS65:"65% of the Quran", login:"Sign in", logout:"Sign out", acctTitle:"Account", acctIn:"You are signed in with Google. Your ticks and quiz records are saved online and synced across all your devices.", acctOut:"Sign in with Google so your ticks and quiz records are saved online and stay the same on all your devices.", loginGoogle:"Sign in with Google", syncOk:"✓ Progress saved", syncBusy:"Saving…", syncErr:"Saving failed. Please check your internet connection.", cloudOff:"Online saving is not reachable right now.",
   intro65:"With these words you reach about two thirds of the Quran’s text. Now it is about frequent nouns and verbs that carry the meaning. Tap a word to see all ayat containing it.",
   searchBtn:"Search", mContains:"contains", mStart:"starts with", mExact:"exact word", playAll:"▶ Play all",
   intro:"These words occur so often in the Quran that together they make up about half of its text. Tap a word to see all ayat containing it. Tick the box to mark it as learned, tap ⓘ for info about the word.",
@@ -282,7 +286,7 @@ const T = {
   msg:[ "Perfect! ماشاء الله", "Very good!", "Good, keep practising.", "Keep at it, you'll get there!" ],
   practice:n=>`Practise mistakes (${n})`, newQuiz:"New quiz", toList:"← Back to list",
   trans:[["en.sahih","English · Sahih International"],["en.pickthall","English · Pickthall"]] },
- ru:{ title:"Поиск слов в Коране", reciter:"· Чтец: Махмуд Халиль аль-Хусари", tabSearch:"🔍 Поиск", tabFifty:"50% Корана", tabS65:"65% Корана",
+ ru:{ title:"Поиск слов в Коране", reciter:"· Чтец: Махмуд Халиль аль-Хусари", tabSearch:"🔍 Поиск", tabFifty:"50% Корана", tabS65:"65% Корана", login:"Войти", logout:"Выйти", acctTitle:"Аккаунт", acctIn:"Ты вошёл через Google. Твои отметки и рекорды тестов сохраняются онлайн и синхронизируются на всех устройствах.", acctOut:"Войди через Google, чтобы твои отметки и рекорды тестов сохранялись онлайн и были одинаковыми на всех устройствах.", loginGoogle:"Войти через Google", syncOk:"✓ Прогресс сохранён", syncBusy:"Сохранение…", syncErr:"Не удалось сохранить. Проверь интернет.", cloudOff:"Онлайн-сохранение сейчас недоступно.",
   intro65:"С этими словами ты охватываешь около двух третей текста Корана. Теперь речь о частых именах и глаголах, которые несут смысл. Нажми на слово, чтобы увидеть все аяты с ним.",
   searchBtn:"Найти", mContains:"содержит", mStart:"начинается с", mExact:"точное слово", playAll:"▶ Слушать все",
   intro:"Эти слова встречаются в Коране так часто, что вместе составляют около половины текста. Нажми на слово, чтобы увидеть все аяты с ним. Галочкой отмечаешь слово как выученное, через ⓘ получаешь информацию о слове.",
@@ -2004,7 +2008,7 @@ let curSec = "fifty";
 const LEARN_KEY = "qws_learned";
 let learned = new Set();
 try{ learned = new Set(JSON.parse(localStorage.getItem(LEARN_KEY)||"[]")); }catch(e){}
-function saveLearned(){ try{ localStorage.setItem(LEARN_KEY, JSON.stringify([...learned])); }catch(e){} }
+function saveLearned(sync=true){ try{ localStorage.setItem(LEARN_KEY, JSON.stringify([...learned])); }catch(e){} if(sync && window.cloud) window.cloud.push(); }
 function toggleLearned(id){ learned.has(id)?learned.delete(id):learned.add(id); saveLearned(); renderLists(); if(current) renderBack(); }
 
 const countCache = {};
@@ -2122,7 +2126,7 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setTab(b.data
 // ---------- Quiz ----------
 const BEST_KEY = "qws_best";
 function getBest(id){ try{ return JSON.parse(localStorage.getItem(BEST_KEY)||"{}")[id] ?? null; }catch(e){ return null; } }
-function setBest(id, pct){ try{ const o=JSON.parse(localStorage.getItem(BEST_KEY)||"{}"); if(o[id]==null||pct>o[id]){ o[id]=pct; localStorage.setItem(BEST_KEY, JSON.stringify(o)); } }catch(e){} }
+function setBest(id, pct){ try{ const o=JSON.parse(localStorage.getItem(BEST_KEY)||"{}"); if(o[id]==null||pct>o[id]){ o[id]=pct; localStorage.setItem(BEST_KEY, JSON.stringify(o)); if(window.cloud) window.cloud.push(); } }catch(e){} }
 const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 const pick = a => a[Math.floor(Math.random()*a.length)];
 const meaning = w => `<b>${M(w)}</b>`;
@@ -2282,13 +2286,104 @@ function applyLang(){
 }
 document.getElementById("lang").onchange = async e=>{
   lang = e.target.value; try{ localStorage.setItem("qws_lang", lang); }catch(_){}
+  if(window.cloud) window.cloud.push(); renderAcct();
   applyLang();
   await refreshTrans();
 };
 applyLang();
+
+// ---------- Konto & Synchronisation (Firebase, siehe Modul unten) ----------
+let cloudUser = null, syncState = "";
+const allBest = () => { try{ return JSON.parse(localStorage.getItem(BEST_KEY)||"{}"); }catch(e){ return {}; } };
+window.QWS = {
+  state: () => ({ learned:[...learned], best:allBest(), lang }),
+  merge(remote){
+    (remote.learned||[]).forEach(id=>learned.add(id));
+    const b = allBest();
+    for(const [k,v] of Object.entries(remote.best||{})) if(b[k]==null || v>b[k]) b[k]=v;
+    try{ localStorage.setItem(BEST_KEY, JSON.stringify(b)); }catch(e){}
+    saveLearned(false);
+    renderLists(); if(current) renderBack();
+  },
+  user(u){ cloudUser = u; renderAcct(); },
+  status(st){ syncState = st; const el=document.getElementById("syncState"); if(el) el.textContent = st ? t(st) : ""; }
+};
+function renderAcct(){
+  const b = document.getElementById("acct");
+  if(cloudUser){
+    b.classList.add("in");
+    b.innerHTML = cloudUser.photoURL ? `<img src="${cloudUser.photoURL}" alt="" referrerpolicy="no-referrer">` : "☁";
+    b.title = cloudUser.email || "";
+  } else { b.classList.remove("in"); b.textContent = "☁ " + t("login"); b.title = ""; }
+}
+document.getElementById("acct").onclick = ()=>{
+  const sh = document.getElementById("sheet"); sh.dataset.id = "";
+  const u = cloudUser;
+  sh.innerHTML = `<h3 style="margin-bottom:10px">${t("acctTitle")}</h3>
+    ${u ? `<div style="text-align:center;margin-bottom:8px">${u.photoURL?`<img src="${u.photoURL}" referrerpolicy="no-referrer" style="width:56px;height:56px;border-radius:50%">`:""}<div><b>${u.displayName||""}</b></div><div style="color:var(--muted);font-size:14px">${u.email||""}</div></div>` : ""}
+    <p style="font-size:15px">${u ? t("acctIn") : t("acctOut")}</p>
+    <div class="sync" id="syncState">${syncState ? t(syncState) : ""}</div>
+    <div class="actions">${u ? `<button id="aOut">${t("logout")}</button>` : `<button id="aIn" class="primary">${t("loginGoogle")}</button>`}<button id="aClose">${t("close")}</button></div>`;
+  if(u) sh.querySelector("#aOut").onclick = ()=>{ window.cloud && window.cloud.logout(); closeInfo(); };
+  else sh.querySelector("#aIn").onclick = ()=>{ if(window.cloud) window.cloud.login(); else { syncState="cloudOff"; document.getElementById("syncState").textContent=t("cloudOff"); } };
+  sh.querySelector("#aClose").onclick = closeInfo;
+  document.getElementById("modal").classList.remove("hidden");
+};
+renderAcct();
+try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(e){}
 document.querySelectorAll(".ex").forEach(x=>x.onclick=()=>{ document.getElementById("q").value=x.textContent; if(AYAT.length) search(x.textContent); });
 
 load().catch(e=>setStatus(t("loadFail")+" ("+e.message+")"));
+</script>
+<script type="module">
+// Firebase: Google-Anmeldung + Fortschritt in Firestore (users/{uid})
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6KNOhPPjE8MZlOy_hnhvm39b5Kev7wno",
+  authDomain: "quran-suche-app.firebaseapp.com",
+  projectId: "quran-suche-app",
+  storageBucket: "quran-suche-app.firebasestorage.app",
+  messagingSenderId: "683937311183",
+  appId: "1:683937311183:web:42cbd7e844f319617ecaba"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+let user = null, timer = null, ready = false;
+
+async function save(){
+  if(!user || !ready) return;
+  window.QWS.status("syncBusy");
+  try{
+    await setDoc(doc(db, "users", user.uid), { ...window.QWS.state(), updated: Date.now() }, { merge: true });
+    window.QWS.status("syncOk");
+  }catch(e){ console.error(e); window.QWS.status("syncErr"); }
+}
+window.cloud = {
+  push(){ if(!user) return; clearTimeout(timer); timer = setTimeout(save, 800); },
+  async login(){
+    try{ await signInWithPopup(auth, provider); }
+    catch(e){
+      if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment","auth/cancelled-popup-request"].includes(e.code)) signInWithRedirect(auth, provider);
+      else if(e.code !== "auth/popup-closed-by-user"){ console.error(e); window.QWS.status("syncErr"); }
+    }
+  },
+  logout(){ signOut(auth); }
+};
+getRedirectResult(auth).catch(e=>console.error(e));
+onAuthStateChanged(auth, async u=>{
+  user = u; ready = false; window.QWS.user(u);
+  if(!u){ window.QWS.status(""); return; }
+  try{
+    const snap = await getDoc(doc(db, "users", u.uid));
+    if(snap.exists()) window.QWS.merge(snap.data());
+    ready = true; await save();
+  }catch(e){ console.error(e); window.QWS.status("syncErr"); }
+});
 </script>
 </body>
 </html>
