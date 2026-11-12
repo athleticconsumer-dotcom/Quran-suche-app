@@ -492,9 +492,9 @@ function trRegex(w){
   pats.sort((a,b)=>b.length-a.length);
   return trCache[key] = pats.length ? new RegExp("(?<![\\p{L}])("+pats.join("|")+")(?![\\p{L}])","giu") : null;
 }
-function markTr(text, color){
+function markTr(text, color, word=activeWord){
   const esc = String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;");
-  const re = activeWord && color ? trRegex(activeWord) : null;
+  const re = word && color ? trRegex(word) : null;
   if(!re) return esc;
   return esc.replace(re, m=>`<mark style="color:${color};background:${color}1f;font-weight:600;border-radius:4px;padding:0 2px">${m}</mark>`);
 }
@@ -2214,7 +2214,7 @@ function renderQuestion(){
   if(q.type==="gap"){
     label=t("qGap"); arOpts=true;
     const ws = q.ay.words.map((x,i)=> i===q.hi ? `<span class="gap" id="gap">؟</span>` : x).join(" ");
-    prompt = `<div class="ayah">${ws}</div><div class="ref">${q.ay.sName} ${q.ay.s}:${q.ay.a}</div><div class="hint">${q.ay.tr}</div>`;
+    prompt = `<div class="ayah">${ws}</div><div class="ref">${q.ay.sName} ${q.ay.s}:${q.ay.a}</div><div class="hint">${markTr(q.ay.tr, "#b08a3e", q.w)}</div>`;
   }
   box.innerHTML = `<div class="qz">
     <div class="qtop"><span>${t("list")(QZ.list.id)} · ${t("qOf")(QZ.i+1, n)}</span><span>✓ ${QZ.score}</span></div>
