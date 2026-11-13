@@ -135,6 +135,31 @@
   .res .wl div{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line);font-size:14px}
   .res .wl .a{font-family:"Amiri Quran",Amiri,serif;font-size:24px;min-width:70px;text-align:center}
   .res .wl .m{flex:1}
+  /* Spielarten */
+  .modes{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .mode{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:14px}
+  .mode .ic{font-size:26px;flex:none;width:34px;text-align:center}
+  .mode b{display:block;font-size:15px}
+  .mode span{font-size:13px;color:var(--muted)}
+  .mode .rec{margin-left:auto;font-size:12px;color:var(--gold);white-space:nowrap}
+  .pairs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pairs .col{display:flex;flex-direction:column;gap:8px}
+  .pairs button{min-height:56px;border-radius:14px;padding:6px 8px;font-size:14px;line-height:1.25}
+  .pairs button.arb{font-family:"Amiri Quran",Amiri,serif;font-size:25px}
+  .pairs button.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .pairs button.right{background:#1d8f4e;border-color:#1d8f4e;color:#fff;opacity:.55}
+  .pairs button.wrong{background:#c62f3b;border-color:#c62f3b;color:#fff}
+  .blitz{text-align:center;padding:10px 0}
+  .blitz .big{font-family:"Amiri Quran",Amiri,serif;font-size:56px;line-height:1.6}
+  .blitz .eq{font-size:15px;color:var(--muted);margin:2px 0}
+  .blitz .mean{font-size:21px;font-weight:600;min-height:60px}
+  .blitz.ok{animation:okf .35s}.blitz.bad{animation:badf .35s}
+  @keyframes okf{50%{background:#1d8f4e22}} @keyframes badf{50%{background:#c62f3b22}}
+  .yn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .yn button{padding:16px 8px;font-size:17px;font-weight:600;border-radius:14px}
+  .yn .y{background:#1d8f4e;border-color:#1d8f4e;color:#fff}
+  .yn .n{background:#c62f3b;border-color:#c62f3b;color:#fff}
+  .timer{font-size:28px;font-weight:700;color:var(--accent)}
   /* ---------- Handy ---------- */
   html,body{overflow-x:hidden;width:100%}
   .search input{min-width:0;width:100%}
@@ -242,7 +267,7 @@ const PAGE = 40;
 
 // ---------- Sprachen ----------
 const T = {
- de:{ title:"Quran Wortsuche", reciter:"· Rezitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Suche", tabFifty:"50% des Quran", tabS65:"65% des Quran", login:"Anmelden", logout:"Abmelden", acctTitle:"Konto", acctIn:"Du bist mit Google angemeldet. Deine Haken und Quiz-Rekorde werden online gespeichert und auf all deinen Geräten abgeglichen.", acctOut:"Melde dich mit Google an, damit deine Haken und Quiz-Rekorde online gespeichert werden und auf all deinen Geräten gleich sind.", loginGoogle:"Mit Google anmelden", syncOk:"✓ Fortschritt gespeichert", syncBusy:"Wird gespeichert…", syncErr:"Speichern fehlgeschlagen. Bitte Internet prüfen.", cloudOff:"Online-Speicherung ist gerade nicht erreichbar.",
+ de:{ title:"Quran Wortsuche", reciter:"· Rezitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Suche", tabFifty:"50% des Quran", tabS65:"65% des Quran", modesTitle:"Spielart wählen", gMix:"Gemischt", gMixD:"Alle Fragetypen durcheinander, 10 Fragen.", gMeaning:"Wortabfrage", gMeaningD:"Arabisch ↔ Bedeutung, 4 Antworten zur Auswahl.", gGap:"Lückentext", gGapD:"Echte Ayat, ein Wort fehlt. Die Übersetzung hilft.", gPairs:"Paare finden", gPairsD:"Ordne arabische Wörter ihren Bedeutungen zu.", gBlitz:"Blitzrunde", gBlitzD:"60 Sekunden: Stimmt die Bedeutung? So viele wie möglich.", record:"Rekord", round:(i,n)=>`Runde ${i} von ${n}`, mistakes:"Fehler", time:"Zeit", points:"Punkte", yes:"✓ Stimmt", no:"✗ Stimmt nicht", timeUp:"Zeit um!", again:"Nochmal", otherMode:"Andere Spielart", tapAr:"Tippe ein arabisches Wort, dann seine Bedeutung.", newRecord:"Neuer Rekord!", noGap:"Für diese Liste gibt es keine Lückentexte.", sec:"Sek.", login:"Anmelden", logout:"Abmelden", acctTitle:"Konto", acctIn:"Du bist mit Google angemeldet. Deine Haken und Quiz-Rekorde werden online gespeichert und auf all deinen Geräten abgeglichen.", acctOut:"Melde dich mit Google an, damit deine Haken und Quiz-Rekorde online gespeichert werden und auf all deinen Geräten gleich sind.", loginGoogle:"Mit Google anmelden", syncOk:"✓ Fortschritt gespeichert", syncBusy:"Wird gespeichert…", syncErr:"Speichern fehlgeschlagen. Bitte Internet prüfen.", cloudOff:"Online-Speicherung ist gerade nicht erreichbar.",
   intro65:"Mit diesen Wörtern kommst du auf rund zwei Drittel des Quran-Textes. Jetzt geht es um häufige Nomen und Verben, die den Inhalt tragen. Tippe ein Wort an, um alle Ayat damit zu sehen.",
   searchBtn:"Suchen", mContains:"enthält", mStart:"beginnt mit", mExact:"genaues Wort", playAll:"▶ Alle abspielen",
   intro:"Diese Wörter kommen im Quran so oft vor, dass sie zusammen rund die Hälfte des Textes ausmachen. Tippe ein Wort an, um alle Ayat damit zu sehen. Mit dem Kästchen markierst du es als gelernt, mit ⓘ bekommst du Infos zum Wort.",
@@ -264,7 +289,7 @@ const T = {
   msg:[ "Perfekt! ماشاء الله", "Sehr gut!", "Gut, weiter üben.", "Dranbleiben, das wird!" ],
   practice:n=>`Fehler üben (${n})`, newQuiz:"Neues Quiz", toList:"← Zur Liste",
   trans:[["de.bubenheim","Deutsch · Bubenheim/Elyas"],["de.aburida","Deutsch · Abu Rida"]] },
- en:{ title:"Quran Word Search", reciter:"· Recitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Search", tabFifty:"50% of the Quran", tabS65:"65% of the Quran", login:"Sign in", logout:"Sign out", acctTitle:"Account", acctIn:"You are signed in with Google. Your ticks and quiz records are saved online and synced across all your devices.", acctOut:"Sign in with Google so your ticks and quiz records are saved online and stay the same on all your devices.", loginGoogle:"Sign in with Google", syncOk:"✓ Progress saved", syncBusy:"Saving…", syncErr:"Saving failed. Please check your internet connection.", cloudOff:"Online saving is not reachable right now.",
+ en:{ title:"Quran Word Search", reciter:"· Recitation: Mahmoud Khalil al-Husary", tabSearch:"🔍 Search", tabFifty:"50% of the Quran", tabS65:"65% of the Quran", modesTitle:"Choose a game", gMix:"Mixed", gMixD:"All question types mixed, 10 questions.", gMeaning:"Word drill", gMeaningD:"Arabic ↔ meaning, 4 answer options.", gGap:"Gap-fill", gGapD:"Real ayat with one word missing. The translation helps.", gPairs:"Find the pairs", gPairsD:"Match Arabic words to their meanings.", gBlitz:"Lightning round", gBlitzD:"60 seconds: is the meaning right? As many as you can.", record:"Record", round:(i,n)=>`Round ${i} of ${n}`, mistakes:"Mistakes", time:"Time", points:"Points", yes:"✓ Right", no:"✗ Wrong", timeUp:"Time’s up!", again:"Play again", otherMode:"Other game", tapAr:"Tap an Arabic word, then its meaning.", newRecord:"New record!", noGap:"There are no gap-fill questions for this list.", sec:"s", login:"Sign in", logout:"Sign out", acctTitle:"Account", acctIn:"You are signed in with Google. Your ticks and quiz records are saved online and synced across all your devices.", acctOut:"Sign in with Google so your ticks and quiz records are saved online and stay the same on all your devices.", loginGoogle:"Sign in with Google", syncOk:"✓ Progress saved", syncBusy:"Saving…", syncErr:"Saving failed. Please check your internet connection.", cloudOff:"Online saving is not reachable right now.",
   intro65:"With these words you reach about two thirds of the Quran’s text. Now it is about frequent nouns and verbs that carry the meaning. Tap a word to see all ayat containing it.",
   searchBtn:"Search", mContains:"contains", mStart:"starts with", mExact:"exact word", playAll:"▶ Play all",
   intro:"These words occur so often in the Quran that together they make up about half of its text. Tap a word to see all ayat containing it. Tick the box to mark it as learned, tap ⓘ for info about the word.",
@@ -286,7 +311,7 @@ const T = {
   msg:[ "Perfect! ماشاء الله", "Very good!", "Good, keep practising.", "Keep at it, you'll get there!" ],
   practice:n=>`Practise mistakes (${n})`, newQuiz:"New quiz", toList:"← Back to list",
   trans:[["en.sahih","English · Sahih International"],["en.pickthall","English · Pickthall"]] },
- ru:{ title:"Поиск слов в Коране", reciter:"· Чтец: Махмуд Халиль аль-Хусари", tabSearch:"🔍 Поиск", tabFifty:"50% Корана", tabS65:"65% Корана", login:"Войти", logout:"Выйти", acctTitle:"Аккаунт", acctIn:"Ты вошёл через Google. Твои отметки и рекорды тестов сохраняются онлайн и синхронизируются на всех устройствах.", acctOut:"Войди через Google, чтобы твои отметки и рекорды тестов сохранялись онлайн и были одинаковыми на всех устройствах.", loginGoogle:"Войти через Google", syncOk:"✓ Прогресс сохранён", syncBusy:"Сохранение…", syncErr:"Не удалось сохранить. Проверь интернет.", cloudOff:"Онлайн-сохранение сейчас недоступно.",
+ ru:{ title:"Поиск слов в Коране", reciter:"· Чтец: Махмуд Халиль аль-Хусари", tabSearch:"🔍 Поиск", tabFifty:"50% Корана", tabS65:"65% Корана", modesTitle:"Выбери игру", gMix:"Смешанный", gMixD:"Все типы вопросов вперемешку, 10 вопросов.", gMeaning:"Слова", gMeaningD:"Арабский ↔ значение, 4 варианта ответа.", gGap:"Пропуск", gGapD:"Настоящие аяты, одно слово пропущено. Перевод помогает.", gPairs:"Найди пары", gPairsD:"Соедини арабские слова с их значениями.", gBlitz:"Блиц", gBlitzD:"60 секунд: верно ли значение? Как можно больше.", record:"Рекорд", round:(i,n)=>`Раунд ${i} из ${n}`, mistakes:"Ошибки", time:"Время", points:"Очки", yes:"✓ Верно", no:"✗ Неверно", timeUp:"Время вышло!", again:"Ещё раз", otherMode:"Другая игра", tapAr:"Нажми арабское слово, затем его значение.", newRecord:"Новый рекорд!", noGap:"Для этого списка нет вопросов с пропуском.", sec:"с", login:"Войти", logout:"Выйти", acctTitle:"Аккаунт", acctIn:"Ты вошёл через Google. Твои отметки и рекорды тестов сохраняются онлайн и синхронизируются на всех устройствах.", acctOut:"Войди через Google, чтобы твои отметки и рекорды тестов сохранялись онлайн и были одинаковыми на всех устройствах.", loginGoogle:"Войти через Google", syncOk:"✓ Прогресс сохранён", syncBusy:"Сохранение…", syncErr:"Не удалось сохранить. Проверь интернет.", cloudOff:"Онлайн-сохранение сейчас недоступно.",
   intro65:"С этими словами ты охватываешь около двух третей текста Корана. Теперь речь о частых именах и глаголах, которые несут смысл. Нажми на слово, чтобы увидеть все аяты с ним.",
   searchBtn:"Найти", mContains:"содержит", mStart:"начинается с", mExact:"точное слово", playAll:"▶ Слушать все",
   intro:"Эти слова встречаются в Коране так часто, что вместе составляют около половины текста. Нажми на слово, чтобы увидеть все аяты с ним. Галочкой отмечаешь слово как выученное, через ⓘ получаешь информацию о слове.",
@@ -2065,13 +2090,13 @@ function renderLists(){
   SECTIONS[curSec].lists.forEach(l=>{
     const done = l.words.filter(w=>learned.has(w.id)).length;
     const c = document.createElement("div"); c.className="listcard";
-    const best = getBest(l.key);
+    const best = listBest(l.key);
     c.innerHTML = `<div class="listhead"><div class="top"><div><h2>${t("list")(l.id)} · ${l.sub[lang]}</h2>
       <div class="sub">${t("learnedOf")(done, l.words.length)}</div>
       ${best!=null?`<div class="best">${t("best")(best)}</div>`:""}</div>
       <button class="quizbtn">${t("quiz")}</button></div>
       <div class="bar"><i style="width:${done/l.words.length*100}%"></i></div></div>`;
-    c.querySelector(".quizbtn").onclick = ()=>startQuiz(l.key);
+    c.querySelector(".quizbtn").onclick = ()=>openModes(l.key);
     l.words.forEach(w=>{
       const n = wordCount(w);
       const r = document.createElement("div"); r.className="row"+(learned.has(w.id)?" done":"");
@@ -2157,6 +2182,7 @@ function setTab(t){
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on", b.dataset.t===hl));
   document.getElementById("viewFifty").classList.toggle("hidden", !isSec);
   document.getElementById("viewQuiz").classList.toggle("hidden", t!=="quiz");
+  if(t!=="quiz") stopBlitz();
   document.getElementById("viewSearch").classList.toggle("hidden", t!=="search");
   document.getElementById("searchBar").classList.toggle("hidden", t!=="search");
   if(isSec){ renderLists(); window.scrollTo({top:0}); }
@@ -2174,13 +2200,14 @@ const dupKey = w => w.q || w.id;  // gleiche Schreibweise = gleiche Antwort (z. 
 
 let QZ = null; // {list, qs[], i, score, answers[]}
 
-function buildQuestion(w, words){
+function buildQuestion(w, words, qm="mix"){
   // Ablenker: andere Wörter mit anderer Schreibweise (هذه kommt 2× vor)
   // keine Ablenker mit gleicher Schreibweise oder gleicher Bedeutung
   const others = shuffle(words.filter(x=>dupKey(x)!==dupKey(w) && M(x)!==M(w)));
   const uniq = []; for(const o of others){ if(!uniq.some(u=>dupKey(u)===dupKey(o) || M(u)===M(o))) uniq.push(o); if(uniq.length===3) break; }
   const options = shuffle([w, ...uniq]);
-  const types = ["ar2m","m2ar"]; if(AYAT.length && !w.combo) types.push("gap","gap");
+  const types = qm==="gap" ? ["gap"] : ["ar2m","m2ar"];
+  if(qm==="mix" && AYAT.length && !w.combo) types.push("gap","gap");
   const type = pick(types);
   if(type==="gap"){
     const res = findList(w).res.filter(r=>r.hits.some(h=>h.len===1));
@@ -2192,16 +2219,19 @@ function buildQuestion(w, words){
   return {type: type==="gap" ? "ar2m" : type, w, options};
 }
 
-function startQuiz(listId, onlyWords){
+const canGap = w => AYAT.length && !w.combo && !w.nosearch && findList(w).res.some(r=>r.hits.some(h=>h.len===1));
+function startQuiz(listId, onlyWords, qm="mix"){
+  stopBlitz();
   const l = ALL_LISTS.find(x=>x.key===listId);
-  const pool = onlyWords || l.words;
+  let pool = onlyWords || l.words;
+  if(qm==="gap"){ pool = pool.filter(canGap); if(!pool.length){ alertSheet(t("noGap")); return; } }
   // 10 Fragen; nicht gelernte Wörter kommen öfter dran
   const target = onlyWords ? Math.min(10, Math.max(4, pool.length*2)) : 10;
   const weighted = pool.flatMap(w=>learned.has(w.id)?[w]:[w,w]);
   let seq = shuffle(pool);
   while(seq.length < target){ const w = pick(weighted); if(w!==seq[seq.length-1]) seq.push(w); }
   seq = seq.slice(0, target);
-  QZ = { list:l, qs: seq.map(w=>buildQuestion(w, l.words)), i:0, score:0, answers:[] };
+  QZ = { list:l, mode:qm, qs: seq.map(w=>buildQuestion(w, l.words, qm)), i:0, score:0, answers:[] };
   setTab("quiz"); renderQuestion(); window.scrollTo({top:0});
 }
 
@@ -2217,7 +2247,7 @@ function renderQuestion(){
     prompt = `<div class="ayah">${ws}</div><div class="ref">${q.ay.sName} ${q.ay.s}:${q.ay.a}</div><div class="hint">${markTr(q.ay.tr, "#b08a3e", q.w)}</div>`;
   }
   box.innerHTML = `<div class="qz">
-    <div class="qtop"><span>${t("list")(QZ.list.id)} · ${t("qOf")(QZ.i+1, n)}</span><span>✓ ${QZ.score}</span></div>
+    <div class="qtop"><span>${t(MODES[QZ.mode].name)} · ${t("qOf")(QZ.i+1, n)}</span><span>✓ ${QZ.score}</span></div>
     <div class="qbar"><i style="width:${QZ.i/n*100}%"></i></div>
     <div class="qtype">${label}</div>
     <div class="prompt">${prompt}</div>
@@ -2259,7 +2289,7 @@ function next(){
 
 function showResult(){
   const n = QZ.qs.length, pct = Math.round(QZ.score/n*100);
-  if(!QZ.retry) setBest(QZ.list.key, pct);
+  if(!QZ.retry) setBest(bestKey(QZ.list.key, QZ.mode), pct);
   // Pro Wort zusammenfassen
   const per = new Map();
   QZ.answers.forEach(a=>{ const e = per.get(a.w.id)||{w:a.w,ok:0,bad:0}; a.ok?e.ok++:e.bad++; per.set(a.w.id,e); });
@@ -2270,13 +2300,174 @@ function showResult(){
     <div class="qtype">${t("list")(QZ.list.id)} · ${t("result")}</div>
     <div class="score">${QZ.score}/${n}</div><div>${msg}</div>
     <div class="wl">${[...per.values()].map(e=>`<div><span>${e.bad?"✗":"✓"}</span><span class="a">${e.w.ar}</span><span class="m">${M(e.w)}</span><span style="color:var(--muted);font-size:12px">${e.ok}/${e.ok+e.bad}</span></div>`).join("")}</div>
-    <div class="qfoot">${wrong.length?`<button id="rWrong" class="primary">${t("practice")(wrong.length)}</button>`:""}<button id="rNew" class="${wrong.length?"":"primary"}">${t("newQuiz")}</button></div>
-    <div class="qfoot"><button id="rBack">${t("toList")}</button></div>
+    <div class="qfoot">${wrong.length?`<button id="rWrong" class="primary">${t("practice")(wrong.length)}</button>`:""}<button id="rNew" class="${wrong.length?"":"primary"}">${t("again")}</button></div>
+    <div class="qfoot"><button id="rModes">${t("otherMode")}</button><button id="rBack">${t("toList")}</button></div>
   </div>`;
-  if(wrong.length) box.querySelector("#rWrong").onclick = ()=>{ const id=QZ.list.key; startQuiz(id, wrong); QZ.retry=true; };
-  box.querySelector("#rNew").onclick = ()=>startQuiz(QZ.list.key);
+  if(wrong.length) box.querySelector("#rWrong").onclick = ()=>{ const id=QZ.list.key, m=QZ.mode; startQuiz(id, wrong, m); QZ.retry=true; };
+  box.querySelector("#rNew").onclick = ()=>startQuiz(QZ.list.key, null, QZ.mode);
+  box.querySelector("#rModes").onclick = ()=>openModes(QZ.list.key);
   box.querySelector("#rBack").onclick = ()=>setTab(QZ.list.sec);
 }
+// ---------- Spielarten ----------
+const MODES = {
+  mix:     {ic:"🎲", name:"gMix",     desc:"gMixD"},
+  meaning: {ic:"🔤", name:"gMeaning", desc:"gMeaningD"},
+  gap:     {ic:"📖", name:"gGap",     desc:"gGapD"},
+  pairs:   {ic:"🧩", name:"gPairs",   desc:"gPairsD"},
+  blitz:   {ic:"⚡", name:"gBlitz",   desc:"gBlitzD"},
+};
+const bestKey = (key, m) => m==="mix" ? key : key+":"+m;
+function listBest(key){
+  const v = ["mix","meaning","gap","pairs"].map(m=>getBest(bestKey(key,m))).filter(x=>x!=null);
+  return v.length ? Math.max(...v) : null;
+}
+function alertSheet(msg){
+  const sh = document.getElementById("sheet"); sh.dataset.id = "";
+  sh.innerHTML = `<p style="font-size:15px;text-align:center">${msg}</p><div class="actions"><button id="aOk" class="primary">OK</button></div>`;
+  sh.querySelector("#aOk").onclick = closeInfo;
+  document.getElementById("modal").classList.remove("hidden");
+}
+function openModes(key){
+  const l = ALL_LISTS.find(x=>x.key===key);
+  const sh = document.getElementById("sheet"); sh.dataset.id = "";
+  sh.innerHTML = `<h3>${t("modesTitle")}</h3><div class="de" style="text-align:center;color:var(--muted);margin-bottom:6px">${t("list")(l.id)} · ${l.sub[lang]}</div>
+    <div class="modes">${Object.entries(MODES).map(([m,o])=>{
+      const b = getBest(bestKey(key,m));
+      const rec = b==null ? "" : `<span class="rec">${t("record")}: ${m==="blitz" ? b : b+"%"}</span>`;
+      return `<button class="mode" data-m="${m}"><span class="ic">${o.ic}</span><span><b>${t(o.name)}</b><span>${t(o.desc)}</span></span>${rec}</button>`;
+    }).join("")}</div>
+    <div class="actions"><button id="mClose">${t("close")}</button></div>`;
+  sh.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{
+    closeInfo(); const m=b.dataset.m;
+    if(m==="pairs") startPairs(key); else if(m==="blitz") startBlitz(key); else startQuiz(key, null, m);
+  });
+  sh.querySelector("#mClose").onclick = closeInfo;
+  document.getElementById("modal").classList.remove("hidden");
+}
+// eindeutige Wörter: keine doppelte Schreibweise, keine doppelte Bedeutung
+function distinctWords(words){
+  const out = [];
+  for(const w of shuffle(words)) if(!out.some(o=>dupKey(o)===dupKey(w) || M(o)===M(w))) out.push(w);
+  return out;
+}
+function gameResult(title, scoreHtml, extraHtml, isRecord, again){
+  const box = document.getElementById("viewQuiz");
+  box.innerHTML = `<div class="qz res">
+    <div class="qtype">${title} · ${t("result")}</div>
+    <div class="score">${scoreHtml}</div>${isRecord?`<div style="color:var(--gold);font-weight:600">${t("newRecord")}</div>`:""}
+    ${extraHtml}
+    <div class="qfoot"><button id="gAgain" class="primary">${t("again")}</button><button id="gModes">${t("otherMode")}</button></div>
+    <div class="qfoot"><button id="gBack">${t("toList")}</button></div></div>`;
+  box.querySelector("#gAgain").onclick = again;
+  box.querySelector("#gModes").onclick = ()=>openModes(QZ.list.key);
+  box.querySelector("#gBack").onclick = ()=>setTab(QZ.list.sec);
+}
+function newRecord(key, val){ const old = getBest(key); setBest(key, val); return old==null || val>old; }
+
+// --- Paare finden ---
+function startPairs(key){
+  stopBlitz();
+  const l = ALL_LISTS.find(x=>x.key===key);
+  const pool = distinctWords(l.words);
+  const rounds = [];
+  for(let i=0; i<pool.length && rounds.length<3; i+=6) rounds.push(pool.slice(i,i+6));
+  if(rounds.length>1 && rounds[rounds.length-1].length<3) rounds[rounds.length-2].push(...rounds.pop());
+  QZ = { list:l, mode:"pairs", rounds, r:0, done:new Set(), mistakes:0, sel:null, t0:Date.now(), pairs:0, wrongW:new Set() };
+  QZ.render = renderPairs;
+  setTab("quiz"); renderPairs(); window.scrollTo({top:0});
+}
+function renderPairs(){
+  const P = QZ, words = P.rounds[P.r];
+  if(!P.order) P.order = { ar: shuffle(words), m: shuffle(words) };
+  const box = document.getElementById("viewQuiz");
+  box.innerHTML = `<div class="qz">
+    <div class="qtop"><span>${t("gPairs")} · ${t("round")(P.r+1, P.rounds.length)}</span><span>${t("mistakes")}: ${P.mistakes}</span></div>
+    <div class="qbar"><i style="width:${(P.r + P.done.size/words.length)/P.rounds.length*100}%"></i></div>
+    <div class="qtype" style="margin-bottom:12px">${t("tapAr")}</div>
+    <div class="pairs"><div class="col">${P.order.ar.map(w=>`<button class="arb${P.done.has(w.id)?" right":""}${P.sel===w.id?" sel":""}" data-a="${w.id}" ${P.done.has(w.id)?"disabled":""}>${w.ar}</button>`).join("")}</div>
+      <div class="col">${P.order.m.map(w=>`<button data-m="${w.id}" class="${P.done.has(w.id)?"right":""}" ${P.done.has(w.id)?"disabled":""}>${M(w)}</button>`).join("")}</div></div>
+    <div class="qfoot"><button id="qQuit">${t("quit")}</button></div></div>`;
+  box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{ P.sel = b.dataset.a; renderPairs(); });
+  box.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{
+    if(!P.sel) return;
+    const a = words.find(w=>w.id===P.sel), m = words.find(w=>w.id===b.dataset.m);
+    if(dupKey(a)===dupKey(m)){ P.done.add(a.id); P.pairs++; P.sel=null; renderPairs();
+      if(P.done.size===words.length) setTimeout(()=>{ if(QZ!==P) return; P.r++; P.done=new Set(); P.order=null;
+        if(P.r<P.rounds.length) renderPairs(); else endPairs(); }, 500);
+    } else {
+      P.mistakes++; P.wrongW.add(a.id);
+      const ab = box.querySelector(`[data-a="${a.id}"]`); b.classList.add("wrong"); ab.classList.add("wrong");
+      setTimeout(()=>{ if(QZ===P){ P.sel=null; renderPairs(); } }, 450);
+    }
+  });
+  box.querySelector("#qQuit").onclick = ()=>setTab(P.list.sec);
+}
+function endPairs(){
+  const P = QZ; P.render = endPairs;
+  const secs = Math.round((Date.now()-P.t0)/1000);
+  const pct = Math.round(P.pairs/(P.pairs+P.mistakes)*100);
+  const rec = P.finished ? false : newRecord(bestKey(P.list.key,"pairs"), pct); P.finished = true;
+  const wrong = P.list.words.filter(w=>P.wrongW.has(w.id));
+  gameResult(t("gPairs"), pct+"%",
+    `<div>${t("mistakes")}: ${P.mistakes} · ${t("time")}: ${secs} ${t("sec")}</div>`+
+    (wrong.length?`<div class="wl">${wrong.map(w=>`<div><span>✗</span><span class="a">${w.ar}</span><span class="m">${M(w)}</span></div>`).join("")}</div>`:""),
+    rec, ()=>startPairs(P.list.key));
+}
+
+// --- Blitzrunde ---
+let blitzTimer = null;
+function stopBlitz(){ if(blitzTimer){ clearInterval(blitzTimer); blitzTimer=null; } }
+function startBlitz(key){
+  stopBlitz();
+  const l = ALL_LISTS.find(x=>x.key===key);
+  QZ = { list:l, mode:"blitz", score:0, wrong:0, end:Date.now()+60000, item:null, wrongW:new Set(), last:null };
+  QZ.render = renderBlitz;
+  nextBlitz(); setTab("quiz"); renderBlitz(); window.scrollTo({top:0});
+  blitzTimer = setInterval(()=>{
+    const el = document.getElementById("bTime"); const left = Math.max(0, Math.ceil((QZ.end-Date.now())/1000));
+    if(el) el.textContent = left;
+    if(left<=0){ stopBlitz(); endBlitz(); }
+  }, 200);
+}
+function nextBlitz(){
+  const B = QZ, words = B.list.words;
+  const weighted = words.flatMap(w=>learned.has(w.id)?[w]:[w,w]);
+  let w; do { w = pick(weighted); } while(words.length>1 && w===B.last);
+  B.last = w;
+  const others = words.filter(x=>dupKey(x)!==dupKey(w) && M(x)!==M(w));
+  const truth = !others.length || Math.random()<0.5;
+  B.item = { w, shown: truth ? w : pick(others), truth };
+}
+function renderBlitz(flash){
+  const B = QZ, it = B.item;
+  const box = document.getElementById("viewQuiz");
+  const left = Math.max(0, Math.ceil((B.end-Date.now())/1000));
+  box.innerHTML = `<div class="qz">
+    <div class="qtop"><span>${t("gBlitz")}</span><span>${t("points")}: ${B.score}</span></div>
+    <div style="text-align:center;margin-top:6px"><span class="timer" id="bTime">${left}</span> <span style="color:var(--muted)">${t("sec")}</span></div>
+    <div class="blitz ${flash||""}"><div class="big">${it.w.ar}</div><div class="eq">=</div><div class="mean">${M(it.shown)}</div></div>
+    <div class="yn"><button class="y" id="bY">${t("yes")}</button><button class="n" id="bN">${t("no")}</button></div>
+    <div class="qfoot"><button id="qQuit">${t("quit")}</button></div></div>`;
+  const ans = v=>{
+    if(Date.now()>B.end) return;
+    const ok = v===B.item.truth;
+    if(ok) B.score++; else { B.wrong++; B.wrongW.add(B.item.w.id); }
+    nextBlitz(); renderBlitz(ok?"ok":"bad");
+  };
+  box.querySelector("#bY").onclick = ()=>ans(true);
+  box.querySelector("#bN").onclick = ()=>ans(false);
+  box.querySelector("#qQuit").onclick = ()=>{ stopBlitz(); setTab(B.list.sec); };
+}
+function endBlitz(){
+  const B = QZ; B.render = endBlitz;
+  const rec = B.finished ? false : newRecord(bestKey(B.list.key,"blitz"), B.score); B.finished = true;
+  const wrong = B.list.words.filter(w=>B.wrongW.has(w.id));
+  gameResult(t("gBlitz"), `${B.score} <span style="font-size:18px;color:var(--muted)">${t("points")}</span>`,
+    `<div>${t("timeUp")} ${t("mistakes")}: ${B.wrong}</div>`+
+    (wrong.length?`<div class="wl">${wrong.map(w=>`<div><span>✗</span><span class="a">${w.ar}</span><span class="m">${M(w)}</span></div>`).join("")}</div>`:""),
+    rec, ()=>startBlitz(B.list.key));
+}
+
 renderLists();
 
 // ---------- UI ----------
@@ -2320,7 +2511,8 @@ function applyLang(){
   const sh = document.getElementById("sheet");
   if(!document.getElementById("modal").classList.contains("hidden") && sh.dataset.id) showInfo(sh.dataset.id);
   if(QZ && !document.getElementById("viewQuiz").classList.contains("hidden")){
-    if(QZ.i >= QZ.qs.length) showResult();
+    if(QZ.render) QZ.render();
+    else if(QZ.i >= QZ.qs.length) showResult();
     else if(QZ.answers.length===QZ.i) renderQuestion();
   }
 }
